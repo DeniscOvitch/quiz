@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Quiz de JavaScript</h1>
+
+    <form id="quizForm">
+        <div class="question">
+            <p>1. Qual operador é usado para comparar valores e tipos em JavaScript?</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="=="> ==</label>
+                <label><input type="radio" name="q1" value="==="> ===</label>
+                <label><input type="radio" name="q1" value="!="> !=</label>
+                <label><input type="radio" name="q1" value="&&"> &&</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>2. Qual função é usada para converter uma string em um número inteiro?</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="parseInt"> parseInt()</label>
+                <label><input type="radio" name="q2" value="parseFloat"> parseFloat()</label>
+                <label><input type="radio" name="q2" value="toString"> toString()</label>
+                <label><input type="radio" name="q2" value="Number"> Number()</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>3. Qual método retorna o número de elementos de um array?</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="size"> size</label>
+                <label><input type="radio" name="q3" value="length"> length</label>
+                <label><input type="radio" name="q3" value="count"> count</label>
+                <label><input type="radio" name="q3" value="items"> items</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>4. Qual palavra-chave é usada para definir uma função em JavaScript?</p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="function"> function</label>
+                <label><input type="radio" name="q4" value="def"> def</label>
+                <label><input type="radio" name="q4" value="void"> void</label>
+                <label><input type="radio" name="q4" value="func"> func</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>5. Qual método adiciona um ou mais elementos ao início de um array?</p>
+            <div class="options">
+                <label><input type="radio" name="q5" value="push"> push()</label>
+                <label><input type="radio" name="q5" value="pop"> pop()</label>
+                <label><input type="radio" name="q5" value="shift"> shift()</label>
+                <label><input type="radio" name="q5" value="unshift"> unshift()</label>
+            </div>
+        </div>
+
+        <button type="button" onclick="submitQuiz()">Enviar Quiz</button>
+    </form>
+
+    <h2 id="score"></h2>
+    <div id="correctAnswers" class="correct-answers"></div>
+
+    <script>
+        const correctAnswers = {
+            q1: "===",
+            q2: "parseInt",
+            q3: "length",
+            q4: "function",
+            q5: "unshift"
+        };
+
+        function submitQuiz() {
+            let score = 0;
+            let feedback = "";
+
+            // Itera sobre as respostas e conta os acertos, e adiciona as corretas em caso de erro
+            for (let question in correctAnswers) {
+                const userAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (userAnswer) {
+                    if (userAnswer.value === correctAnswers[question]) {
+                        score++;
+                    } else {
+                        feedback += `Questão ${question[1]}: Resposta correta é "${correctAnswers[question]}".<br>`;
+                    }
+                } else {
+                    feedback += `Questão ${question[1]}: Resposta correta é "${correctAnswers[question]}".<br>`;
+                }
+            }
+
+            // Exibe a pontuação final e respostas corretas no localStorage
+            document.getElementById("score").innerText = `Você acertou ${score} de 5 perguntas.`;
+            document.getElementById("correctAnswers").innerHTML = feedback;
+            localStorage.setItem("quizScore", score);
+        }
+
+        // Carrega a pontuação salva ao iniciar a página
+        window.onload = function() {
+            const savedScore = localStorage.getItem("quizScore");
+            if (savedScore !== null) {
+                document.getElementById("score").innerText = `Última pontuação: Você acertou ${savedScore} de 5 perguntas.`;
+            }
+        };
+    </script>
+
+</body>
+</html>
